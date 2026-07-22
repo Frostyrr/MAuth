@@ -1,5 +1,5 @@
 import { CREATED, OK, UNAUTHORIZED } from "../constants/http";
-import { createAccount, loginUser, refreshUserAccessToken, resetPassword, sendPasswordResetEmail, verifyEmail } from "../services/auth.service";
+import { createAccount, loginUser, refreshUserAccessToken, resetPassword, sendPasswordResetEmail, sendVerificationEmail, verifyEmail } from "../services/auth.service";
 import catchErrors from "../utils/catchErrors";
 import { z } from "zod"
 import { clearAuthCookies, getAccessTokenCookieOptions, getRefreshTokenCookieOptions, setAuthCookies } from "../utils/cookies";
@@ -85,6 +85,16 @@ export const verifyEmailHandler = catchErrors(async (req, res) => {
         message: "Email successfully verified."
     })
 
+})
+
+export const sendVerificationEmailHandler = catchErrors(async (req, res) => {
+    const email = emailSchema.parse(req.body.email)
+
+    await sendVerificationEmail(email)
+
+    return res.status(OK).json({
+        message: "Verification email sent."
+    })
 })
 
 export const sendPasswordResetEmailHandler = catchErrors(async (req, res) => {

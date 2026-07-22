@@ -46,10 +46,14 @@ export const createAccount = async(data:CreateAccountParams) => {
     // send code for verification email 
     const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`
 
-    const { error } = await sendMail({
+    const { data: resendData, error } = await sendMail({
         to: user.email,
         ...getVerifyEmailTemplate(url)
     })
+
+    if (error) {
+        console.error("Resend delivery failed during createAccount:", error)
+    }
 
     // create session
     const session = await SessionModel.create({
@@ -189,6 +193,51 @@ export const verifyEmail = async (code: string) => {
     }
 }
 
+export const sendVerificationEmail = async (email: string) => {
+    // get user by email
+    const user = await UserModel.findOne({ email });
+    appAssert(user, NOT_FOUND, "User not found.");
+
+    if (user.verified) {
+        return { message: "Email is already verified." };
+    }
+
+    // check email rate limit
+    const fiveMinAgo = fiveMinutesAgo();
+    const count = await VerificationCodeModel.countDocuments({
+        userId: user._id,
+        type: VerificationCodeType.EmailVerification,
+        createdAt: { $gt: fiveMinAgo },
+    });
+
+    appAssert(count <= 2, TOO_MANY_REQUESTS, "Too many requests, please try again later.");
+
+    // create verification code
+    const expiresAt = oneYearFromNow();
+    const verificationCode = await VerificationCodeModel.create({
+        userId: user._id,
+        type: VerificationCodeType.EmailVerification,
+        expiresAt,
+    });
+
+    // send verification email via Resend
+    const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`;
+
+    const { data, error } = await sendMail({
+        to: user.email,
+        ...getVerifyEmailTemplate(url),
+    });
+
+    if (error) {
+        console.error("Resend delivery failed during sendVerificationEmail:", error);
+    }
+
+    return {
+        url,
+        emailId: data?.id,
+    };
+};
+
 export const sendPasswordResetEmail = async (email: string) => {
     // get user by email
     const user = await UserModel.findOne({ email })
@@ -219,12 +268,15 @@ export const sendPasswordResetEmail = async (email: string) => {
         to: user.email,
         ...getPasswordResetTemplate(url),
     })
-    appAssert(data?.id, INTERNAL_SERVER_ERROR, `${error?.name} - ${error?.message}`)
+
+    if (error) {
+        console.error("Resend delivery failed during sendPasswordResetEmail:", error)
+    }
 
     // return success
     return {
         url,
-        emailId: data.id,
+        emailId: data?.id,
     }
 }
 

@@ -18,9 +18,11 @@ export const Register: React.FC = () => {
 
   const { mutate: createAccount, isPending, isError, error: mutationError } = useMutation({
     mutationFn: register,
-    onSuccess: () => {
-      navigate('/login', {
+    onSuccess: (_, variables) => {
+      // Redirect to /verify-email passing registered email in location state
+      navigate('/email/verify', {
         replace: true,
+        state: { email: variables.email },
       });
     },
   });

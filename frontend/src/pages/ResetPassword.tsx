@@ -1,23 +1,44 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Lock, ArrowRight, Shield, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Lock, ArrowRight, Shield, CheckCircle2, AlertCircle } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import background from '../assets/bg.jpg';
+import { resetPassword } from '../lib/api';
+import { useMutation } from '@tanstack/react-query';
+import { formatErrorMessage } from '../utils/formatError';
 
-export const ResetPassword = () => {
+export const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const code = searchParams.get('code') || '';
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  const { mutate: updatePassword, isPending, isSuccess, error: mutationError } = useMutation({
+    mutationFn: resetPassword,
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 2000);
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!code) {
+      setError('Invalid or missing password reset code.');
+      return;
+    }
     if (!newPassword || !confirmPassword) {
       setError('Please fill in both password fields');
+      return;
+    }
+    if (newPassword.length < 6) {
+      setError('Password must be at least 6 characters long');
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -25,17 +46,12 @@ export const ResetPassword = () => {
       return;
     }
     setError('');
-    setIsLoading(true);
-
-    // Simulate password update
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
-      setTimeout(() => {
-        navigate('/login');
-      }, 1800);
-    }, 1000);
+    updatePassword({ password: newPassword, verificationCode: code });
   };
+
+  const rawError = mutationError || error;
+  const displayErrorMsg = formatErrorMessage(rawError);
+  const isPasswordValid = newPassword.length >= 6;
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none hardware-sharp font-sans">
@@ -66,14 +82,27 @@ export const ResetPassword = () => {
             </p>
           </div>
 
+          {/* Premium Modern Error UI Banner */}
+          {displayErrorMsg && (
+            <div className="bg-red-950/40 border border-red-900/60 rounded-xl p-3.5 mb-6 text-red-200 text-xs font-sans flex items-start gap-3 shadow-lg backdrop-blur-md hardware-sharp">
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+              <div className="flex flex-col gap-0.5">
+                <span className="font-semibold text-red-200">Password Reset Error</span>
+                <span className="text-red-300/90 leading-relaxed font-normal">
+                  {displayErrorMsg}
+                </span>
+              </div>
+            </div>
+          )}
+
           {isSuccess ? (
             <div className="flex flex-col items-center text-center gap-4 py-4">
               <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="font-sans font-bold text-white text-lg">
-                  Password Updated
+                <h3 className="font-sans font-bold text-white text-xl tracking-tight">
+                  Password Reset Successfully!
                 </h3>
                 <p className="text-xs text-zinc-400 font-sans">
                   Redirecting to Sign In portal...
@@ -82,23 +111,49 @@ export const ResetPassword = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-              {error && (
-                <div className="bg-red-950/50 border border-red-900/80 rounded-xl p-3 text-red-300 text-xs font-sans flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                  <span>{error}</span>
-                </div>
-              )}
-
               {/* New Password Field */}
-              <Input
-                label="New Password"
-                type="password"
-                placeholder="••••••••••••"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                icon={<Lock className="w-4 h-4" />}
-                required
-              />
+              <div className="flex flex-col gap-1.5">
+                <Input
+                  label="New Password"
+                  type="password"
+                  placeholder="••••••••••••"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  icon={<Lock className="w-4 h-4" />}
+                  required
+                />
+                {/* Dynamic Password Length Indicator */}
+                <div className="flex items-center justify-between text-xs px-1">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2
+                      className={`w-3.5 h-3.5 transition-colors ${
+                        isPasswordValid ? 'text-emerald-400' : 'text-zinc-500'
+                      }`}
+                    />
+                    <span
+                      className={`transition-colors ${
+                        isPasswordValid
+                          ? 'text-emerald-400 font-medium'
+                          : newPassword.length > 0
+                          ? 'text-zinc-300'
+                          : 'text-zinc-500'
+                      }`}
+                    >
+                      Must be at least 6 characters
+                    </span>
+                  </div>
+
+                  {newPassword.length > 0 && (
+                    <span
+                      className={`font-mono text-[10px] ${
+                        isPasswordValid ? 'text-emerald-400' : 'text-zinc-500'
+                      }`}
+                    >
+                      {newPassword.length}/6
+                    </span>
+                  )}
+                </div>
+              </div>
 
               {/* Confirm New Password Field */}
               <Input
@@ -115,11 +170,11 @@ export const ResetPassword = () => {
               <Button
                 type="submit"
                 variant="primary"
-                disabled={isLoading}
+                isLoading={isPending}
                 iconRight={<ArrowRight className="w-4 h-4 text-black" />}
                 className="mt-2"
               >
-                {isLoading ? 'Resetting Password...' : 'Reset Password'}
+                {isPending ? 'Resetting Password...' : 'Reset Password'}
               </Button>
             </form>
           )}

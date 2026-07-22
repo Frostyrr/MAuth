@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   icon?: React.ReactNode;
   error?: string;
 }
@@ -20,21 +20,23 @@ export const Input: React.FC<InputProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordType = type === 'password';
 
-  const inputId = id || `input-${label.toLowerCase().replace(/\s+/g, '-')}`;
+  const inputId = id || (label ? `input-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
   const actualType = isPasswordType ? (showPassword ? 'text' : 'password') : type;
 
   return (
     <div className="flex flex-col gap-1.5 w-full relative hardware-sharp group font-sans">
       {/* Field Label */}
-      <div className="flex items-center justify-between">
-        <label
-          htmlFor={inputId}
-          className="font-sans text-xs uppercase tracking-wider text-zinc-400 font-semibold select-none"
-        >
-          {label}
-        </label>
-        {error && <span className="text-red-400 font-sans text-xs">{error}</span>}
-      </div>
+      {label && (
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor={inputId}
+            className="font-sans text-xs uppercase tracking-wider text-zinc-400 font-semibold select-none"
+          >
+            {label}
+          </label>
+          {error && <span className="text-red-400 font-sans text-xs">{error}</span>}
+        </div>
+      )}
 
       {/* Input Field Container */}
       <div className="relative flex items-center w-full">
