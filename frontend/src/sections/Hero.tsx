@@ -22,17 +22,17 @@ export const Hero: React.FC = () => {
 
       {/* 4. Main Hero Typography & Content Container */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center gap-6 py-12">
-        {/* Main Headline: Auth for Developers */}
-        <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.08] max-w-3xl">
+        {/* Main Headline with Top-to-Bottom Gradient (White fading to Silver-Gray) matching image reference */}
+        <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.08] max-w-3xl bg-gradient-to-b from-white via-zinc-100 to-zinc-400/90 bg-clip-text text-transparent">
           Auth for<br />Developers
         </h1>
 
-        {/* Subheading: One-Sentence Phrase about Auth for Developers */}
-        <p className="text-zinc-400 text-base sm:text-lg lg:text-xl font-normal max-w-2xl text-center leading-relaxed">
+        {/* Subheading: ABC Favorit Typography */}
+        <p className="text-zinc-400 font-favorit text-base sm:text-lg lg:text-xl font-normal max-w-2xl text-center leading-relaxed">
           Empowering developers with production-ready, secure, and seamless JWT authentication boilerplate built for modern web applications.
         </p>
 
-        {/* Action Buttons using customizable Button component with SVG Icons */}
+        {/* Action Buttons using customizable Button component (ABC Favorit font) */}
         <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
           <Button
             variant="primary"

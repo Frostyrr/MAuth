@@ -1,19 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Button from './Button';
 
 export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-900/80 bg-black/80 backdrop-blur-xl transition-all hardware-sharp font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Left Branding: MAuth4Devs */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl bg-zinc-100 text-black flex items-center justify-center font-bold font-sans text-base shadow-[0_0_15px_rgba(255,255,255,0.15)] group-hover:scale-105 transition-transform">
-            <Shield className="w-4 h-4 text-black stroke-[2.5]" />
-          </div>
-          <span className="font-sans font-bold text-white text-lg tracking-tight group-hover:text-zinc-200 transition-colors">
-            MAuth<span className="text-zinc-400 font-sans font-normal text-sm">4Devs</span>
+        {/* Left Branding: MAuth4Devs with Top-to-Bottom Silver Gradient */}
+        <Link to="/" className="group">
+          <span className="font-sans font-bold text-xl tracking-tight bg-gradient-to-b from-white via-zinc-100 to-zinc-400/90 bg-clip-text text-transparent">
+            MAuth4Devs
           </span>
         </Link>
 

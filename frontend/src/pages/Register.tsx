@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Shield, LogIn, UserCheck } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Shield, LogIn, UserCheck, AlertCircle, CheckCircle2 } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import background from '../assets/bg.jpg';
+import { register } from '../lib/api';
+import { useMutation } from '@tanstack/react-query';
+import { formatErrorMessage } from '../utils/formatError';
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const { mutate: createAccount, isPending, isError, error: mutationError } = useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      navigate('/login', {
+        replace: true,
+      });
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,19 +31,21 @@ export const Register: React.FC = () => {
       setError('Please fill in all required fields');
       return;
     }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
     setError('');
-    setIsLoading(true);
-
-    // Simulate account registration
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/login');
-    }, 1000);
+    createAccount({ email, password, confirmPassword });
   };
+
+  const rawError = isError ? mutationError : error;
+  const displayErrorMsg = formatErrorMessage(rawError);
+  const isPasswordValid = password.length >= 6;
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none hardware-sharp font-sans">
@@ -63,15 +76,21 @@ export const Register: React.FC = () => {
             </p>
           </div>
 
+          {/* Premium Modern Error UI Banner */}
+          {displayErrorMsg && (
+            <div className="bg-red-950/40 border border-red-900/60 rounded-xl p-3.5 mb-6 text-red-200 text-xs font-sans flex items-start gap-3 shadow-lg backdrop-blur-md hardware-sharp">
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+              <div className="flex flex-col gap-0.5">
+                <span className="font-semibold text-red-200">Registration Error</span>
+                <span className="text-red-300/90 leading-relaxed font-normal">
+                  {displayErrorMsg}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Registration Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            {error && (
-              <div className="bg-red-950/50 border border-red-900/80 rounded-xl p-3 text-red-300 text-xs font-sans flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                <span>{error}</span>
-              </div>
-            )}
-
             {/* Email Address Field */}
             <Input
               label="Email Address"
@@ -83,16 +102,50 @@ export const Register: React.FC = () => {
               required
             />
 
-            {/* Password Field with Show/Hide Toggle */}
-            <Input
-              label="Password"
-              type="password"
-              placeholder="••••••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              icon={<Lock className="w-4 h-4" />}
-              required
-            />
+            {/* Password Field with Show/Hide Toggle & Requirement Indicator */}
+            <div className="flex flex-col gap-1.5">
+              <Input
+                label="Password"
+                type="password"
+                placeholder="••••••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                icon={<Lock className="w-4 h-4" />}
+                required
+              />
+
+              {/* Dynamic Password Length Indicator */}
+              <div className="flex items-center justify-between text-xs px-1">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2
+                    className={`w-3.5 h-3.5 transition-colors ${
+                      isPasswordValid ? 'text-emerald-400' : 'text-zinc-500'
+                    }`}
+                  />
+                  <span
+                    className={`transition-colors ${
+                      isPasswordValid
+                        ? 'text-emerald-400 font-medium'
+                        : password.length > 0
+                        ? 'text-zinc-300'
+                        : 'text-zinc-500'
+                    }`}
+                  >
+                    Must be at least 6 characters
+                  </span>
+                </div>
+
+                {password.length > 0 && (
+                  <span
+                    className={`font-mono text-[10px] ${
+                      isPasswordValid ? 'text-emerald-400' : 'text-zinc-500'
+                    }`}
+                  >
+                    {password.length}/6
+                  </span>
+                )}
+              </div>
+            </div>
 
             {/* Confirm Password Field with Show/Hide Toggle */}
             <Input
@@ -109,12 +162,12 @@ export const Register: React.FC = () => {
             <Button
               type="submit"
               variant="primary"
-              disabled={isLoading}
+              isLoading={isPending}
               icon={<UserCheck className="w-4 h-4 text-black" />}
               iconRight={<ArrowRight className="w-4 h-4 text-black" />}
               className="mt-2"
             >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isPending ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
 

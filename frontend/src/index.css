@@ -1,27 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-favorit: 'ABC Favorit', 'Favorit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 @layer base {
   :root {
-    font-family: 'Geist', sans-serif;
+    font-family: 'Inter', sans-serif;
     color-scheme: dark;
   }
 
   body {
     background-color: #000000;
     color: #ffffff;
-    font-family: 'Geist', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+/* Custom font class for ABC Favorit (Dinamo) with high-grade Grotesk fallback */
+.font-favorit {
+  font-family: 'ABC Favorit', 'Favorit', 'Plus Jakarta Sans', -apple-system, sans-serif;
 }
 
 /* Hardware sharpness utility */

@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Shield, UserPlus } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Shield, UserPlus, AlertCircle } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import background from '../assets/bg.jpg';
+import { login } from '../lib/api';
+import { useMutation } from '@tanstack/react-query';
+import { formatErrorMessage } from '../utils/formatError';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const { mutate: signIn, isPending, isError, error: mutationError } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      navigate('/', {
+        replace: true,
+      });
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,14 +31,11 @@ export const Login: React.FC = () => {
       return;
     }
     setError('');
-    setIsLoading(true);
-
-    // Simulate login authentication
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/');
-    }, 1000);
+    signIn({ email, password });
   };
+
+  const rawError = isError ? mutationError : error;
+  const displayErrorMsg = formatErrorMessage(rawError);
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden select-none hardware-sharp font-sans">
@@ -58,15 +66,21 @@ export const Login: React.FC = () => {
             </p>
           </div>
 
+          {/* Premium Modern Error UI Banner */}
+          {displayErrorMsg && (
+            <div className="bg-red-950/40 border border-red-900/60 rounded-xl p-3.5 mb-6 text-red-200 text-xs font-sans flex items-start gap-3 shadow-lg backdrop-blur-md hardware-sharp">
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+              <div className="flex flex-col gap-0.5">
+                <span className="font-semibold text-red-200">Authentication Error</span>
+                <span className="text-red-300/90 leading-relaxed font-normal">
+                  {displayErrorMsg}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            {error && (
-              <div className="bg-red-950/50 border border-red-900/80 rounded-xl p-3 text-red-300 text-xs font-sans flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                <span>{error}</span>
-              </div>
-            )}
-
             {/* Email Address Field */}
             <Input
               label="Email Address"
@@ -103,11 +117,11 @@ export const Login: React.FC = () => {
             <Button
               type="submit"
               variant="primary"
-              disabled={isLoading}
+              isLoading={isPending}
               iconRight={<ArrowRight className="w-4 h-4 text-black" />}
               className="mt-2"
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isPending ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
 
