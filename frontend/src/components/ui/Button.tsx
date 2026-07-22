@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Optional React Router destination path */
   to?: string;
+  /** Optional location state for React Router Link */
+  state?: any;
   /** Optional external website URL */
   href?: string;
   /** Button visual style variant */
@@ -27,6 +29,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const Button: React.FC<ButtonProps> = ({
   to,
+  state,
   href,
   variant = 'primary',
   icon,
@@ -98,7 +101,7 @@ export const Button: React.FC<ButtonProps> = ({
   // 1. If 'to' prop is provided, render React Router Link (Internal Routing)
   if (to) {
     return (
-      <Link to={to} className={combinedClasses}>
+      <Link to={to} state={state} className={combinedClasses}>
         {content}
       </Link>
     );

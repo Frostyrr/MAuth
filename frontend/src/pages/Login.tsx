@@ -8,6 +8,8 @@ import background from '../assets/bg.jpg';
 import { login } from '../lib/api';
 import { useMutation } from '@tanstack/react-query';
 import { formatErrorMessage } from '../utils/formatError';
+import queryClient from '../config/queryClient';
+import { AUTH } from '../hooks/useAuth';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -17,10 +19,10 @@ export const Login: React.FC = () => {
 
   const { mutate: signIn, isPending, isError, error: mutationError } = useMutation({
     mutationFn: login,
-    onSuccess: () => {
-      navigate('/', {
-        replace: true,
-      });
+    onSuccess: async () => {
+      // Invalidate auth query cache so useAuth refetches user data with new HTTP-only cookie
+      await queryClient.invalidateQueries({ queryKey: [AUTH] });
+      navigate('/dashboard', { replace: true });
     },
   });
 
@@ -51,7 +53,7 @@ export const Login: React.FC = () => {
 
       {/* Main Form Container */}
       <div className="relative z-10 w-full max-w-md mx-auto">
-        {/* Top "< Home" Back Button matching design reference */}
+        {/* Top "< Home" Back Button */}
         <div className="flex items-center justify-start mb-3">
           <Link
             to="/"
@@ -135,10 +137,12 @@ export const Login: React.FC = () => {
           {/* Footer Link: Sign Up */}
           <div className="mt-8 pt-6 border-t border-zinc-900 text-center flex flex-col items-center gap-2">
             <span className="text-xs text-zinc-400 font-sans">
-              Don't have an account?
+              Don't have an account?{' '}
               <Link
                 to="/register"
-                className="text-xs text-white font-bold font-sans hover:text-zinc-200"> Sign Up
+                className="text-xs text-white font-bold font-sans hover:text-zinc-200"
+              >
+                Sign Up
               </Link>
             </span>
           </div>

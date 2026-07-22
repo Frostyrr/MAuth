@@ -8,6 +8,7 @@ import ResetPassword from './pages/ResetPassword'
 import About from './pages/About'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailPrompt from './pages/VerifyEmailPrompt'
+import Dashboard from './pages/Dashboard'
 import AppContainer from './components/layout/AppContainer'
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
 
       {/* Protected Routes Container */}
       <Route element={<AppContainer />}>
-        {/* Place protected routes (e.g., /dashboard, /settings) here */}
+        <Route path="/dashboard" element={<Dashboard />} />
       </Route>
     </Routes>
   )

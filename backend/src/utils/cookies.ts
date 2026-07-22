@@ -5,10 +5,9 @@ export const REFRESH_PATH = "/auth/refresh"
 const secure = process.env.NODE_ENV !== "development"
 
 const defaults: CookieOptions = {
-    sameSite:"strict",
+    sameSite: "lax",
     httpOnly: true,
     secure
-
 }
 
 export const getAccessTokenCookieOptions = (): CookieOptions => ({
@@ -33,7 +32,7 @@ export const setAuthCookies = ({res, accessToken, refreshToken}:Params ) =>
         .cookie("accessToken", accessToken, getAccessTokenCookieOptions())
         .cookie("refreshToken", refreshToken, getRefreshTokenCookieOptions())
 
-    export const clearAuthCookies = (res: Response) =>
-        res
-            .clearCookie("accessToken")
-            .clearCookie("refreshToken", { path: REFRESH_PATH, })
+export const clearAuthCookies = (res: Response) =>
+    res
+        .clearCookie("accessToken")
+        .clearCookie("refreshToken", { path: REFRESH_PATH, })

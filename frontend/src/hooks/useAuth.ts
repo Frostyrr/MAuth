@@ -3,9 +3,16 @@ import { getUser } from "../lib/api"
 
 export const AUTH = "auth"
 
+export interface UserProfile {
+  _id: string;
+  email: string;
+  verified: boolean;
+  createdAt?: string;
+}
+
 const useAuth = (opts = {}) => {
     const {
-        data: user,
+        data,
         ...rest
     } = useQuery({
         queryKey: [AUTH],
@@ -13,6 +20,13 @@ const useAuth = (opts = {}) => {
         staleTime: Infinity,
         ...opts
     })
+
+    const rawData = data as any;
+    const user: UserProfile | undefined =
+      rawData?.user ||
+      rawData?.data?.user ||
+      rawData?.data ||
+      (rawData?._id ? rawData : undefined);
 
     return {
         user,
