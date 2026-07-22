@@ -1,4 +1,4 @@
-import { NextFunction } from "express"
+import { Request, Response, NextFunction } from "express"
 
 type AsyncController = (
     req: Request,
@@ -6,7 +6,7 @@ type AsyncController = (
     next: NextFunction,
 ) => Promise<any>
 
-const catchErrors = (controller: AsyncController): AsyncController => {
+const catchErrors = (controller: AsyncController): AsyncController =>
     async (req, res, next) => {
         try {
             await controller(req, res, next)
@@ -14,6 +14,5 @@ const catchErrors = (controller: AsyncController): AsyncController => {
             next(error)
         }
     }
-}
 
 export default catchErrors
