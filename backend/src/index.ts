@@ -1,4 +1,9 @@
 import "dotenv/config"
+import dns from "dns"
+
+// Set Node DNS resolution order to IPv4 first to prevent IPv6 TLS ECONNRESET timeouts on Cloudflare/Resend endpoints
+dns.setDefaultResultOrder("ipv4first")
+
 import express from 'express'
 import connectDB from './config/db'
 import cors from 'cors'
@@ -36,7 +41,6 @@ app.use("/auth", authRoutes)
 // protected routes
 app.use("/user", authenticate, userRoutes)
 app.use("/sessions", authenticate, sessionRoutes)
-
 
 app.use(errorHandler)
 

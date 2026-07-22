@@ -110,7 +110,7 @@ export const ForgetPassword: React.FC = () => {
               <Input
                 label="Email Address"
                 type="email"
-                placeholder="developer@mauth4devs.com"
+                placeholder="don.juan@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 icon={<Mail className="w-4 h-4" />}

@@ -17,6 +17,13 @@ export const Navbar: React.FC = () => {
         {/* Center Navigation Links (Clean text without icons) */}
         <nav className="hidden md:flex items-center gap-8 font-sans text-sm text-zinc-400">
           <Link
+            to="/"
+            className="hover:text-white transition-colors"
+          >
+            Home
+          </Link>
+
+          <Link
             to="/about"
             className="hover:text-white transition-colors"
           >

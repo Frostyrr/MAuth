@@ -13,6 +13,9 @@ export const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code') || '';
+  const exp = Number(searchParams.get('exp')) || 0;
+  const now = Date.now();
+  const linkIsValid = Boolean(code && exp && exp > now);
 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,8 +32,8 @@ export const ResetPassword: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!code) {
-      setError('Invalid or missing password reset code.');
+    if (!linkIsValid) {
+      setError('The password reset link is invalid or has expired.');
       return;
     }
     if (!newPassword || !confirmPassword) {
@@ -90,7 +93,7 @@ export const ResetPassword: React.FC = () => {
           </div>
 
           {/* Premium Modern Error UI Banner */}
-          {displayErrorMsg && (
+          {displayErrorMsg && linkIsValid && (
             <div className="bg-red-950/40 border border-red-900/60 rounded-xl p-3.5 mb-6 text-red-200 text-xs font-sans flex items-start gap-3 shadow-lg backdrop-blur-md hardware-sharp">
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
               <div className="flex flex-col gap-0.5">
@@ -102,7 +105,33 @@ export const ResetPassword: React.FC = () => {
             </div>
           )}
 
-          {isSuccess ? (
+          {/* 1. Invalid or Expired Link State */}
+          {!linkIsValid ? (
+            <div className="flex flex-col items-center text-center gap-5 py-2">
+              <div className="w-14 h-14 rounded-2xl bg-red-950/40 border border-red-900/60 flex items-center justify-center text-red-400 shadow-[0_0_30px_rgba(239,68,68,0.15)]">
+                <AlertCircle className="w-7 h-7" />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <h3 className="font-sans font-bold text-white text-xl tracking-tight">
+                  Invalid or Expired Link
+                </h3>
+                <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                  The password reset link is invalid or has expired. Please request a new recovery link.
+                </p>
+              </div>
+
+              <div className="w-full mt-2 flex flex-col gap-3">
+                <Button variant="primary" to="/password/forgot" className="w-full">
+                  Request New Reset Link
+                </Button>
+                <Button variant="secondary" to="/login" className="w-full text-xs font-sans">
+                  Return to Sign In
+                </Button>
+              </div>
+            </div>
+          ) : isSuccess ? (
+            /* 2. Success Password Reset State */
             <div className="flex flex-col items-center text-center gap-4 py-4">
               <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
                 <CheckCircle2 className="w-7 h-7" />
@@ -117,6 +146,7 @@ export const ResetPassword: React.FC = () => {
               </div>
             </div>
           ) : (
+            /* 3. Valid Password Reset Form */
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               {/* New Password Field */}
               <div className="flex flex-col gap-1.5">
@@ -126,6 +156,9 @@ export const ResetPassword: React.FC = () => {
                   placeholder="••••••••••••"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
+                  onKeyDown={(e) => 
+                    e.key === "Enter" && updatePassword({ password: newPassword, verificationCode: code })
+                  } 
                   icon={<Lock className="w-4 h-4" />}
                   required
                 />

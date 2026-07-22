@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, UserPlus, AlertCircle, ChevronLeft } from 'lucide-react';
+import { Mail, Lock, ArrowRight, AlertCircle, ChevronLeft } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -69,7 +69,7 @@ export const Login: React.FC = () => {
               Welcome Back
             </h1>
             <p className="text-zinc-400 text-xs sm:text-sm font-normal">
-              Enter your credentials
+              Enter your credentials to sign in
             </p>
           </div>
 
@@ -136,11 +136,13 @@ export const Login: React.FC = () => {
           <div className="mt-8 pt-6 border-t border-zinc-900 text-center flex flex-col items-center gap-2">
             <span className="text-xs text-zinc-400 font-sans">
               Don't have an account?
-              <Link
-                to="/register"
-                className="text-xs text-white font-sans font-bold"> Sign Up
-              </Link>
             </span>
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-zinc-300 transition-colors py-1.5 px-3.5 rounded-xl border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 font-sans"
+            >
+              <span>Sign Up</span>
+            </Link>
           </div>
         </AuthCard>
       </div>
