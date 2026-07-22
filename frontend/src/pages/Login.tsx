@@ -136,13 +136,11 @@ export const Login: React.FC = () => {
           <div className="mt-8 pt-6 border-t border-zinc-900 text-center flex flex-col items-center gap-2">
             <span className="text-xs text-zinc-400 font-sans">
               Don't have an account?
+              <Link
+                to="/register"
+                className="text-xs text-white font-bold font-sans hover:text-zinc-200"> Sign Up
+              </Link>
             </span>
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-zinc-300 transition-colors py-1.5 px-3.5 rounded-xl border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 font-sans"
-            >
-              <span>Sign Up</span>
-            </Link>
           </div>
         </AuthCard>
       </div>
