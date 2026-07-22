@@ -20,7 +20,7 @@ export const Register: React.FC = () => {
     mutationFn: register,
     onSuccess: (_, variables) => {
       // Redirect to /verify-email prompt page passing registered email in location state
-      navigate('/verify-email', {
+      navigate('/email/verify', {
         replace: true,
         state: { email: variables.email },
       });
