@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { ArrowRight, Lock, Key, Cpu, Zap, CheckCircle2 } from 'lucide-react';
 import Button from '../components/Button';
+import Navbar from '../components/Navbar';
 import background from '../assets/bg.jpg';
 
 export const About: React.FC = () => {
@@ -40,33 +40,8 @@ export const About: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_85%)] pointer-events-none" />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-zinc-800/15 rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Header Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-900/80 bg-black/80 backdrop-blur-xl font-sans">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link to="/" className="group">
-            <span className="font-sans font-bold text-xl tracking-tight bg-gradient-to-b from-white via-zinc-100 to-zinc-400/90 bg-clip-text text-transparent">
-              MAuth4Devs
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-3 font-sans">
-            <Link
-              to="/login"
-              className="px-4 py-2 rounded-xl text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-900/60 transition-all"
-            >
-              Login
-            </Link>
-            <Button
-              variant="primary"
-              to="/register"
-              iconRight={<ArrowRight className="w-4 h-4 text-black" />}
-              className="px-4 py-2 text-xs font-semibold"
-            >
-              Get Started
-            </Button>
-          </div>
-        </div>
-      </header>
+      {/* Shared Unified Header Navigation */}
+      <Navbar />
 
       {/* Main About Content */}
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10 flex flex-col gap-16 text-center">

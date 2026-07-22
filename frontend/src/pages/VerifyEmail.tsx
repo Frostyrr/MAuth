@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle2, AlertCircle, ArrowRight, Shield, RefreshCw } from 'lucide-react';
+import { CheckCircle2, AlertCircle, ArrowRight, RefreshCw, ChevronLeft } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Button from '../components/Button';
 import background from '../assets/bg.jpg';
@@ -41,16 +41,20 @@ export const VerifyEmail: React.FC = () => {
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-md mx-auto">
-        <AuthCard>
-          {/* Header & Brand Logo */}
-          <div className="flex flex-col items-center text-center mb-8">
-            <Link
-              to="/"
-              className="w-10 h-10 rounded-2xl bg-zinc-100 text-black flex items-center justify-center font-bold text-lg mb-4 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 transition-transform"
-            >
-              <Shield className="w-5 h-5 text-black stroke-[2.5]" />
-            </Link>
+        {/* Top "< Home" Back Button */}
+        <div className="flex items-center justify-start mb-3">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold font-sans text-zinc-400 hover:text-white transition-colors group"
+          >
+            <ChevronLeft className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
+            <span>Home</span>
+          </Link>
+        </div>
 
+        <AuthCard>
+          {/* Card Header */}
+          <div className="flex flex-col items-center text-center mb-8">
             <h1 className="font-sans font-bold text-3xl text-white tracking-tight mb-1.5">
               Email Verification
             </h1>
@@ -76,7 +80,7 @@ export const VerifyEmail: React.FC = () => {
             </div>
           )}
 
-          {/* 2. Success Verification State (Shortened Text) */}
+          {/* 2. Success Verification State */}
           {isSuccess && (
             <div className="flex flex-col items-center text-center gap-5 py-4">
               <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
@@ -105,7 +109,7 @@ export const VerifyEmail: React.FC = () => {
             </div>
           )}
 
-          {/* 3. Error Verification State (Invalid / Expired Link / Already Verified) */}
+          {/* 3. Error Verification State */}
           {isError && (
             <div className="flex flex-col items-center text-center gap-6 py-2">
               <div className="bg-red-950/40 border border-red-900/60 rounded-xl p-4 text-red-200 text-xs font-sans flex items-start gap-3 shadow-lg backdrop-blur-md w-full text-left">

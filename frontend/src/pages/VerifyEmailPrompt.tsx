@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, ArrowRight, Shield, RefreshCw, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Mail, ArrowRight, RefreshCw, CheckCircle2, AlertCircle, ArrowLeft, ChevronLeft } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Button from '../components/Button';
 import background from '../assets/bg.jpg';
@@ -55,18 +55,22 @@ export const VerifyEmailPrompt: React.FC = () => {
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-md mx-auto">
-        <AuthCard>
-          {/* Header & Brand Logo */}
-          <div className="flex flex-col items-center text-center mb-6">
-            <Link
-              to="/"
-              className="w-10 h-10 rounded-2xl bg-zinc-100 text-black flex items-center justify-center font-bold text-lg mb-4 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 transition-transform"
-            >
-              <Shield className="w-5 h-5 text-black stroke-[2.5]" />
-            </Link>
+        {/* Top "< Home" Back Button */}
+        <div className="flex items-center justify-start mb-3">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold font-sans text-zinc-400 hover:text-white transition-colors group"
+          >
+            <ChevronLeft className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
+            <span>Home</span>
+          </Link>
+        </div>
 
-            <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-200 shadow-xl mb-4">
-              <Mail className="w-8 h-8 text-zinc-300" />
+        <AuthCard>
+          {/* Card Header */}
+          <div className="flex flex-col items-center text-center mb-6">
+            <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-200 shadow-xl mb-4">
+              <Mail className="w-7 h-7 text-zinc-300" />
             </div>
 
             <h1 className="font-sans font-bold text-2xl sm:text-3xl text-white tracking-tight mb-2">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Shield, UserPlus, AlertCircle } from 'lucide-react';
+import { Mail, Lock, ArrowRight, UserPlus, AlertCircle, ChevronLeft } from 'lucide-react';
 import AuthCard from '../components/AuthCard';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -51,13 +51,20 @@ export const Login: React.FC = () => {
 
       {/* Main Form Container */}
       <div className="relative z-10 w-full max-w-md mx-auto">
-        <AuthCard>
-          {/* Card Header & Brand Logo */}
-          <div className="flex flex-col items-center text-center mb-8">
-            <Link to="/" className="w-10 h-10 rounded-2xl bg-zinc-100 text-black flex items-center justify-center font-bold text-lg mb-4 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 transition-transform">
-              <Shield className="w-5 h-5 text-black stroke-[2.5]" />
-            </Link>
+        {/* Top "< Home" Back Button matching design reference */}
+        <div className="flex items-center justify-start mb-3">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold font-sans text-zinc-400 hover:text-white transition-colors group"
+          >
+            <ChevronLeft className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
+            <span>Home</span>
+          </Link>
+        </div>
 
+        <AuthCard>
+          {/* Card Header */}
+          <div className="flex flex-col items-center text-center mb-8">
             <h1 className="font-sans font-bold text-3xl text-white tracking-tight mb-1.5">
               Welcome Back
             </h1>

@@ -24,18 +24,18 @@ export const Hero: React.FC = () => {
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center gap-6 py-12">
         {/* Top Developer Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-xs font-sans font-medium text-zinc-300 backdrop-blur-md">
-          <Shield className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Full-Stack MERN &amp; TypeScript Auth Boilerplate</span>
+          <Shield className="w-3.5 h-3.5 zinc-400" />
+          <span>Authentication Boilerplate</span>
         </div>
 
         {/* Main Headline with Top-to-Bottom Silver Gradient */}
         <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.08] max-w-3xl bg-gradient-to-b from-white via-zinc-100 to-zinc-400/90 bg-clip-text text-transparent">
-          Auth for<br />Developers
+          Auth for Developers
         </h1>
 
         {/* Subheading: Refined, Grammatically Perfect & Technical */}
         <p className="text-zinc-400 font-favorit text-base sm:text-lg lg:text-m font-normal max-w-3xl text-center leading-relaxed">
-          A production-ready full-stack MERN &amp; TypeScript authentication system.
+          A production-ready full-stack MERN and TypeScript authentication system.
         </p>
 
         {/* Action Buttons */}
