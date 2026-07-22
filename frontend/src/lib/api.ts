@@ -6,3 +6,5 @@ export const verifyEmail = async (verificationCode: string) => API.get(`/auth/em
 export const resendVerificationEmail = async (email: string) => API.post("/auth/email/resend", { email });
 export const sendPasswordResetEmail = async (email: string) => API.post("/auth/password/forgot", { email });
 export const resetPassword = async (data: Record<string, any>) => API.post("/auth/password/reset", data);
+
+export const getUser = async () => API.get("/user")

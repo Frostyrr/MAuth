@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2, AlertCircle, ArrowRight, RefreshCw, ChevronLeft } from 'lucide-react';
-import AuthCard from '../components/AuthCard';
-import Button from '../components/Button';
+import AuthCard from '../components/ui/AuthCard';
+import Button from '../components/ui/Button';
 import background from '../assets/bg.jpg';
 import { verifyEmail } from '../lib/api';
 import { useQuery } from '@tanstack/react-query';
@@ -137,7 +137,7 @@ export const VerifyEmail: React.FC = () => {
 
                 <Button
                   variant="secondary"
-                  to="/verify-email"
+                  to="/email/verify"
                   className="w-full text-xs font-sans"
                 >
                   Resend Email Instructions

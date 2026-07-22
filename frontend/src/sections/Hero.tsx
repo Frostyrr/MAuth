@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, ExternalLink, Shield } from 'lucide-react';
 import background from '../assets/bg.jpg';
-import Button from '../components/Button';
+import Button from '../components/ui/Button';
 
 export const Hero: React.FC = () => {
   return (

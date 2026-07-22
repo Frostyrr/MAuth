@@ -8,18 +8,26 @@ import ResetPassword from './pages/ResetPassword'
 import About from './pages/About'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailPrompt from './pages/VerifyEmailPrompt'
+import AppContainer from './components/AppContainer'
 
 function App() {
   return (
     <Routes>
+      {/* Public Pages */}
       <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/verify-email" element={<VerifyEmailPrompt />} />
       <Route path="/email/verify" element={<VerifyEmailPrompt />} />
       <Route path="/email/verify/:code" element={<VerifyEmail />} />
       <Route path="/password/forgot" element={<ForgetPassword />} />
       <Route path="/password/reset" element={<ResetPassword />} />
-      <Route path="/about" element={<About />} />
+
+      {/* Protected Routes Container */}
+      <Route element={<AppContainer />}>
+        {/* Place protected routes (e.g., /dashboard, /settings) here */}
+      </Route>
     </Routes>
   )
 }

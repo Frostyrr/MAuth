@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Mail, ArrowRight, RefreshCw, CheckCircle2, AlertCircle, ArrowLeft, ChevronLeft } from 'lucide-react';
-import AuthCard from '../components/AuthCard';
-import Button from '../components/Button';
+import AuthCard from '../components/ui/AuthCard';
+import Button from '../components/ui/Button';
 import background from '../assets/bg.jpg';
 import { resendVerificationEmail } from '../lib/api';
 import { useMutation } from '@tanstack/react-query';

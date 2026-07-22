@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Lock, ArrowRight, CheckCircle2, AlertCircle, ChevronLeft } from 'lucide-react';
-import AuthCard from '../components/AuthCard';
-import Input from '../components/Input';
-import Button from '../components/Button';
+import AuthCard from '../components/ui/AuthCard';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 import background from '../assets/bg.jpg';
 import { resetPassword } from '../lib/api';
 import { useMutation } from '@tanstack/react-query';
