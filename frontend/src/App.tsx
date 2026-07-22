@@ -8,7 +8,7 @@ import ResetPassword from './pages/ResetPassword'
 import About from './pages/About'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyEmailPrompt from './pages/VerifyEmailPrompt'
-import AppContainer from './components/AppContainer'
+import AppContainer from './components/layout/AppContainer'
 
 function App() {
   return (

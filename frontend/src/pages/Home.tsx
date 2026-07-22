@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/ui/Navbar';
+import Navbar from '../components/layout/Navbar';
 import Hero from '../sections/Hero';
 
 export const Home: React.FC = () => {

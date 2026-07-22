@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, Lock, Key, Cpu, Zap, CheckCircle2 } from 'lucide-react';
 import Button from '../components/ui/Button';
-import Navbar from '../components/ui/Navbar';
+import Navbar from '../components/layout/Navbar';
 import background from '../assets/bg.jpg';
 
 export const About: React.FC = () => {

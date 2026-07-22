@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import Button from './Button';
+import Button from '../ui/Button';
 
 export const Navbar: React.FC = () => {
   return (
