@@ -104,7 +104,7 @@ export const Register: React.FC = () => {
             <Input
               label="Email Address"
               type="email"
-              placeholder="developer@mauth4devs.com"
+              placeholder="don.juan@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               icon={<Mail className="w-4 h-4" />}
@@ -184,14 +184,11 @@ export const Register: React.FC = () => {
           <div className="mt-8 pt-6 border-t border-zinc-900 text-center flex flex-col items-center gap-2">
             <span className="text-xs text-zinc-400 font-sans">
               Already have an account?
+              <Link
+                to="/login"
+                className="text-xs text-white font-sans font-bold"> Back to Login
+              </Link>
             </span>
-            <Link
-              to="/login"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-zinc-300 transition-colors py-1.5 px-3.5 rounded-xl border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 font-sans"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Back to Login</span>
-            </Link>
           </div>
         </AuthCard>
       </div>
